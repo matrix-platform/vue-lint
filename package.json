@@ -1,0 +1,37 @@
+{
+    "name": "@matrix-platform/vue-lint",
+    "version": "0.0.0",
+    "license": "MIT",
+    "packageManager": "pnpm@11.22.0+sha512.1ff870c4c6133dfd88fb2afc46dd13d47f09c9794b438c6fdb47ca98caf3bc16381ee0be93a091b8e3824cf01f889f46d7d9e20910fb0be1ab0fb5baa80dd621",
+    "type": "module",
+    "exports": {
+        ".": "./src/index.js",
+        "./stylelint": "./src/stylelint.js"
+    },
+    "scripts": {
+        "lint": "eslint . && stylelint \"fixtures/**/*.{css,scss,vue}\"",
+        "test": "vitest run --reporter=dot"
+    },
+    "dependencies": {
+        "@eslint/json": "^2.0.1",
+        "@stylistic/eslint-plugin": "^5.10.0",
+        "eslint-plugin-perfectionist": "^5.10.0",
+        "eslint-plugin-vue": "^10.10.0",
+        "postcss-html": "^1.8.1",
+        "postcss-scss": "^4.0.9",
+        "stylelint-order": "^8.1.1"
+    },
+    "devDependencies": {
+        "eslint": "^10.8.0",
+        "stylelint": "^17.14.1",
+        "vitest": "^4.1.10"
+    },
+    "peerDependencies": {
+        "eslint": "^10.8.0",
+        "stylelint": "^17.14.1"
+    },
+    "engines": {
+        "node": ">=22",
+        "pnpm": ">=11"
+    }
+}
