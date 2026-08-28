@@ -1,3 +1,4 @@
+import requireVForParentheses from "../src/rules/require-v-for-parentheses.js";
 import sortImportClauses from "../src/rules/sort-import-clauses.js";
 import sortModuleDeclarations from "../src/rules/sort-module-declarations.js";
 import sortTemplateAttributes from "../src/rules/sort-template-attributes.js";
@@ -73,6 +74,43 @@ jsRuleTester.run("sort-module-declarations", sortModuleDeclarations, {
     ]
 });
 
+vueRuleTester.run("require-v-for-parentheses", requireVForParentheses, {
+    invalid: [{
+        code: "<template><div v-for=\"item in items\"></div></template>",
+        errors: [{ messageId: "missingParentheses" }],
+        filename: "Probe.vue",
+        output: "<template><div v-for=\"(item) in items\"></div></template>"
+    }, {
+        code: "<template><div v-for=\"item, index in items\"></div></template>",
+        errors: [{ messageId: "missingParentheses" }],
+        filename: "Probe.vue",
+        output: "<template><div v-for=\"(item, index) in items\"></div></template>"
+    }, {
+        code: "<template><div v-for=\"n in 8\"></div></template>",
+        errors: [{ messageId: "missingParentheses" }],
+        filename: "Probe.vue",
+        output: "<template><div v-for=\"(n) in 8\"></div></template>"
+    }, {
+        code: "<template><div v-for=\"{ id } in items\"></div></template>",
+        errors: [{ messageId: "missingParentheses" }],
+        filename: "Probe.vue",
+        output: "<template><div v-for=\"({ id }) in items\"></div></template>"
+    }],
+    valid: [{
+        code: "<template><div v-for=\"(item) in items\"></div></template>",
+        filename: "Probe.vue"
+    }, {
+        code: "<template><div v-for=\"(item, index) in items\"></div></template>",
+        filename: "Probe.vue"
+    }, {
+        code: "<template><div v-for=\"(value, key, index) in object\"></div></template>",
+        filename: "Probe.vue"
+    }, {
+        code: "<template><div v-for=\"(item) of items\"></div></template>",
+        filename: "Probe.vue"
+    }]
+});
+
 vueRuleTester.run("sort-template-attributes", sortTemplateAttributes, {
     invalid: [{
         code: "<template><div id=\"probe\" class=\"subject\"></div></template>",
@@ -87,7 +125,7 @@ vueRuleTester.run("sort-template-attributes", sortTemplateAttributes, {
         code: "<template><div :class=\"classes\" @click=\"click\" #default id=\"probe\" v-if=\"shown\"></div></template>",
         filename: "Probe.vue"
     }, {
-        code: "<template><div :[name]=\"value\" v-for=\"item in items\" v-if=\"item\"></div></template>",
+        code: "<template><div :[name]=\"value\" v-for=\"(item) in items\" v-if=\"item\"></div></template>",
         filename: "Probe.vue"
     }]
 });

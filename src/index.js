@@ -168,6 +168,7 @@ export default ({ browserFiles = [], browserGlobals = {}, ignores = [], nodeGlob
             ...syntaxRules,
             ...vueEssentialRules,
             "@stylistic/indent": "off",
+            "house/require-v-for-parentheses": "error",
             "house/sort-template-attributes": "error",
             "vue/no-mutating-props": "error",
             "vue/multi-word-component-names": "off",
