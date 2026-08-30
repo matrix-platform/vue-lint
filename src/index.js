@@ -175,6 +175,7 @@ export default ({ browserFiles = [], browserGlobals = {}, ignores = [], nodeGlob
             "vue/no-reserved-component-names": "off",
             "vue/no-undef-components": "error",
             "vue/no-unused-components": "error",
+            "vue/valid-template-root": "off",
             "vue/block-order": ["error", {
                 order: ["template", "style", "script"]
             }],

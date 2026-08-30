@@ -133,7 +133,8 @@ attribute 沒有語意先後,順序純看誰先打字,加個 prop 就整行重�
 ## 內建設定的咬人點
 
 - **`.vue` 的 `@stylistic/indent` 關掉**,縮排交給 `vue/html-indent` 與 `vue/script-indent`(4 空格、`baseIndent: 1`,內容相對 `<template>` / `<script>` 再縮一層)。`.js` 才走 `@stylistic/indent`。
-- **`vue/essential` 整組展開後併進 `.vue`**,另外手動開 `no-mutating-props`、`no-undef-components`、`no-unused-components`,手動關 `multi-word-component-names`、`no-reserved-component-names`。
+- **`vue/essential` 整組展開後併進 `.vue`**,另外手動開 `no-mutating-props`、`no-undef-components`、`no-unused-components`,手動關 `multi-word-component-names`、`no-reserved-component-names`、`valid-template-root`。
+- **`vue/valid-template-root` 在 Vue 3 是誤報**:Vue 3 接受空 `<template></template>`(編成 `return null`),規則卻沿用 Vue 2 的單根前提,逼 renderless 元件塞假節點進 DOM。規則無選項,只能整條關,代價是失去 `<template src>` 必須為空的檢查。
 - **升 `eslint-plugin-vue` 大版時第一個爆的是 `src/index.js`**:那裡從 `flat/essential` 撈名為 `vue/essential/rules` 的 entry,撈不到直接 throw,不會靜靜少掛一整組規則。
 
 ## 開發
