@@ -108,6 +108,15 @@ export const useRootTheme = () => {};
 
 無名的 `export default { ... }` 取不到識別字,不參與排序也不受約束。
 
+**`let` / `var` 與 `const` 分開排。** 可變宣告只跟可變宣告比,不會被要求排進 `const` 的字母序裡,所以模組層那一兩個可變狀態可以放在檔案最上面(或任何讀起來合理的位置)而不必為它加豁免。它們彼此之間仍然按 ASCII 排序。
+
+```js
+let cache = null;
+
+const Alpha = 1;
+const Zebra = 2;
+```
+
 **咬人點:TDZ**。規則要求非函式排在函式**之前**,而 `const foo = () => {}` 不 hoist,於是 `const value = helper();` 排到 `const helper = () => 1;` 之前就 `ReferenceError`。規則只看形狀、不認相依。兩條路:
 
 1. **讓 value 不在模組層求值**——改成 `const value = () => helper();`,或把呼叫搬進真正用到的地方。先試這條。

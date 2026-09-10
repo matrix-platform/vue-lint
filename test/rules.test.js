@@ -65,12 +65,17 @@ jsRuleTester.run("sort-module-declarations", sortModuleDeclarations, {
     }, {
         code: "const zebra = () => {};\nconst alpha = function () {};\n",
         errors: [{ messageId: "unsorted" }]
+    }, {
+        code: "let zebra = null;\nlet alpha = null;\n",
+        errors: [{ messageId: "unsorted" }]
     }],
     valid: [
         "const Alpha = 1;\nconst Zebra = 2;\nexport const Beta = 3;\nexport const Omega = 4;\n",
         "const roots = new WeakMap();\nconst captureClass = () => {};\nexport const policy = {};\nexport const useRootTheme = () => {};\n",
         "const { alpha } = source;\nexport { alpha };\n",
-        "const Alpha = 1, Beta = 2;\nexport default { Alpha, Beta };\n"
+        "const Alpha = 1, Beta = 2;\nexport default { Alpha, Beta };\n",
+        "let cache = null;\nconst Alpha = 1;\nconst Zebra = 2;\n",
+        "const Alpha = 1;\nlet cache = null;\nconst Zebra = 2;\n"
     ]
 });
 

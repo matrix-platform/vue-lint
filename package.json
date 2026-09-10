@@ -13,18 +13,18 @@
         "test": "vitest run --reporter=dot"
     },
     "dependencies": {
-        "@eslint/json": "^2.0.1",
+        "@eslint/json": "^2.1.0",
         "@stylistic/eslint-plugin": "^5.10.0",
-        "eslint-plugin-perfectionist": "^5.10.0",
-        "eslint-plugin-vue": "^10.10.0",
+        "eslint-plugin-perfectionist": "^5.11.0",
+        "eslint-plugin-vue": "^10.11.0",
         "postcss-html": "^1.8.1",
         "postcss-scss": "^4.0.9",
         "stylelint-order": "^8.1.1"
     },
     "devDependencies": {
-        "eslint": "^10.8.0",
-        "stylelint": "^17.14.1",
-        "vitest": "^4.1.10"
+        "eslint": "^10.10.0",
+        "stylelint": "^17.15.0",
+        "vitest": "^4.1.11"
     },
     "peerDependencies": {
         "eslint": "^10.8.0",
