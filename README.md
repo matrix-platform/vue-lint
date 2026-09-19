@@ -145,6 +145,8 @@ attribute 沒有語意先後,順序純看誰先打字,加個 prop 就整行重�
 - **`vue/essential` 整組展開後併進 `.vue`**,另外手動開 `no-mutating-props`、`no-undef-components`、`no-unused-components`,手動關 `multi-word-component-names`、`no-reserved-component-names`、`valid-template-root`。
 - **`vue/valid-template-root` 在 Vue 3 是誤報**:Vue 3 接受空 `<template></template>`(編成 `return null`),規則卻沿用 Vue 2 的單根前提,逼 renderless 元件塞假節點進 DOM。規則無選項,只能整條關,代價是失去 `<template src>` 必須為空的檢查。
 - **升 `eslint-plugin-vue` 大版時第一個爆的是 `src/index.js`**:那裡從 `flat/essential` 撈名為 `vue/essential/rules` 的 entry,撈不到直接 throw,不會靜靜少掛一整組規則。
+- **`perfectionist/sort-named-exports` 與 `sort-named-imports` 必須成對。** 只開 import 那一條時,`export { … } from "./x.js"` 的清單完全沒人看 —— 消費端曾經出現一份 87 個名字的 re-export barrel,唯一的順序破口(`treeProps` 排在 `tooltipProps` 前)是人工掃出來的,lint 全程沉默。兩條的選項一字不差:自訂 ASCII 字母表、`ignoreCase: false`,所以大寫 `A–Z` 一律排在小寫之前。
+- **`perfectionist/sort-objects` 刻意**沒有**開。** 物件字面量的鍵序經常是有意義的:數字色階(`50` / `100` / … / `950`,字串排序會變成 `100, 200, …, 50, 950`)、示範碼物件(鍵序就是頁面上區塊出現的順序)、把引號鍵集中在前的分組。在消費端實測開這條規則會產生 7 個違規,**7 個全部都是不該排的**。要開就得配同樣數量、附理由的 `eslint-disable`,不划算。
 
 ## 開發
 
@@ -152,3 +154,5 @@ attribute 沒有語意先後,順序純看誰先打字,加個 prop 就整行重�
 pnpm test     # 四支自訂規則的 RuleTester 案例
 pnpm lint     # 用自己的設定 lint 自己(含 fixtures/)
 ```
+
+**內建規則(非自訂規則)的回歸面是 `fixtures/`,不是 `test/`。** `test/rules.test.js` 只用 `RuleTester` 測 `src/rules/` 那四支;`perfectionist` / `@stylistic` / `vue` 這些設定要驗,得在 `fixtures/` 放一份會被它們掃到的樣本。**「加了規則之後 `pnpm lint` 還是綠」不算驗證** —— 綠也可能是規則根本沒掛上。正確的做法是先把 fixture 改成違規、確認 `pnpm lint` 變紅**而且訊息裡的 rule id 正確**,再改回正序確認變綠。`fixtures/exports.js` 就是為 `sort-named-exports` 放的。

@@ -80,6 +80,12 @@ const syntaxRules = {
         message: "Write object methods as key: () => {}, except getters and setters",
         selector: "Property[method=true][kind='init']"
     }],
+    "perfectionist/sort-named-exports": ["error", {
+        alphabet: ASCII_ALPHABET,
+        ignoreCase: false,
+        order: "asc",
+        type: "custom"
+    }],
     "perfectionist/sort-named-imports": ["error", {
         alphabet: ASCII_ALPHABET,
         ignoreCase: false,
