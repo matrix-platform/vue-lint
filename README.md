@@ -12,7 +12,7 @@ Vue 3 + 純 JavaScript(ESM)+ Sass 專案的共用 lint 設定:一份 ESLint 工�
 "devDependencies": {
     "@matrix-platform/vue-lint": "github:matrix-platform/vue-lint#main",
     "eslint": "^10.8.0",
-    "stylelint": "^17.14.1"
+    "stylelint": "^17.14.1 || ^18.0.0"
 }
 ```
 
@@ -151,8 +151,13 @@ attribute 沒有語意先後,順序純看誰先打字,加個 prop 就整行重�
 ## 開發
 
 ```
-pnpm test     # 四支自訂規則的 RuleTester 案例
-pnpm lint     # 用自己的設定 lint 自己(含 fixtures/)
+pnpm test     # 自訂規則與整份設定的測試
+pnpm lint     # 用自己的設定 lint 自己
 ```
 
-**內建規則(非自訂規則)的回歸面是 `fixtures/`,不是 `test/`。** `test/rules.test.js` 只用 `RuleTester` 測 `src/rules/` 那四支;`perfectionist` / `@stylistic` / `vue` 這些設定要驗,得在 `fixtures/` 放一份會被它們掃到的樣本。**「加了規則之後 `pnpm lint` 還是綠」不算驗證** —— 綠也可能是規則根本沒掛上。正確的做法是先把 fixture 改成違規、確認 `pnpm lint` 變紅**而且訊息裡的 rule id 正確**,再改回正序確認變綠。`fixtures/exports.js` 就是為 `sort-named-exports` 放的。
+測試分兩份:
+
+- `test/rules.test.js`:用 `RuleTester` 測 `src/rules/` 那四支。
+- `test/config.test.js`:把一小段程式碼丟進真正的 `lint()` 與 stylelint 設定,斷言**剛好**觸發哪些 rule id。全域白名單、工廠參數、規則掛在哪種副檔名、`perfectionist` / `@stylistic` / `vue` / `json` / `stylelint-order` 的設定都在這裡驗。
+
+**「加了規則之後測試還是綠」不算驗證**,綠也可能是規則根本沒掛上。改設定時,在 `config.test.js` 加一筆違規案例,先確認它在改動前紅、改動後綠。斷言是完全比對,所以案例程式碼本身若踩到別條規則也會紅,寫案例時要讓它只違反要測的那一條。

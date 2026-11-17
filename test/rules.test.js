@@ -42,6 +42,10 @@ jsRuleTester.run("sort-import-clauses", sortImportClauses, {
         code: "import { zebra } from \"zebra\";\n// note\nimport Alpha from \"alpha\";\n",
         errors: [{ messageId: "unsorted" }],
         output: null
+    }, {
+        code: "import alpha from \"a\";\nimport Beta from \"b\";\n",
+        errors: [{ messageId: "unsorted" }],
+        output: "import Beta from \"b\";\nimport alpha from \"a\";\n"
     }],
     valid: [
         "import \"side-effect\";\nimport * as namespace from \"namespace\";\nimport Alpha from \"alpha\";\nimport { zebra } from \"zebra\";\n",
@@ -68,6 +72,12 @@ jsRuleTester.run("sort-module-declarations", sortModuleDeclarations, {
     }, {
         code: "let zebra = null;\nlet alpha = null;\n",
         errors: [{ messageId: "unsorted" }]
+    }, {
+        code: "export const Zebra = 1;\nexport const Alpha = 2;\n",
+        errors: [{ messageId: "unsorted" }]
+    }, {
+        code: "const helper = () => {};\nclass Alpha {}\n",
+        errors: [{ messageId: "valueBeforeFunction" }]
     }],
     valid: [
         "const Alpha = 1;\nconst Zebra = 2;\nexport const Beta = 3;\nexport const Omega = 4;\n",
@@ -75,7 +85,8 @@ jsRuleTester.run("sort-module-declarations", sortModuleDeclarations, {
         "const { alpha } = source;\nexport { alpha };\n",
         "const Alpha = 1, Beta = 2;\nexport default { Alpha, Beta };\n",
         "let cache = null;\nconst Alpha = 1;\nconst Zebra = 2;\n",
-        "const Alpha = 1;\nlet cache = null;\nconst Zebra = 2;\n"
+        "const Alpha = 1;\nlet cache = null;\nconst Zebra = 2;\n",
+        "const Zebra = 1;\nconst alpha = 2;\n"
     ]
 });
 
@@ -113,6 +124,9 @@ vueRuleTester.run("require-v-for-parentheses", requireVForParentheses, {
     }, {
         code: "<template><div v-for=\"(item) of items\"></div></template>",
         filename: "Probe.vue"
+    }, {
+        code: "<template><div v-for=\"( item ) in items\"></div></template>",
+        filename: "Probe.vue"
     }]
 });
 
@@ -125,12 +139,27 @@ vueRuleTester.run("sort-template-attributes", sortTemplateAttributes, {
         code: "<template><div v-if=\"shown\" :class=\"classes\"></div></template>",
         errors: [{ messageId: "directiveLast" }],
         filename: "Probe.vue"
+    }, {
+        code: "<template><div @click=\"click\" :class=\"classes\"></div></template>",
+        errors: [{ messageId: "unsorted" }],
+        filename: "Probe.vue"
+    }, {
+        code: "<template><div v-bind:title=\"title\" id=\"probe\"></div></template>",
+        errors: [{ messageId: "directiveLast" }],
+        filename: "Probe.vue"
+    }, {
+        code: "<template><div title=\"t\" Id=\"probe\"></div></template>",
+        errors: [{ messageId: "unsorted" }],
+        filename: "Probe.vue"
     }],
     valid: [{
         code: "<template><div :class=\"classes\" @click=\"click\" #default id=\"probe\" v-if=\"shown\"></div></template>",
         filename: "Probe.vue"
     }, {
         code: "<template><div :[name]=\"value\" v-for=\"(item) in items\" v-if=\"item\"></div></template>",
+        filename: "Probe.vue"
+    }, {
+        code: "<template><div v-show=\"shown\" v-bind:title=\"title\"></div></template>",
         filename: "Probe.vue"
     }]
 });
